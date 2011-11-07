@@ -1,0 +1,69 @@
+.nobullet {
+  list-style-type: none;
+}
+.left {
+  width: 45%;
+  float: left;
+}
+.right {
+  width: 45%;
+  float: right;
+}
+.orange {
+  color: #b55703;
+}
+.blue {
+  color: #0363b5;
+}
+.green {
+  color: #26940d;
+}
+.red {
+  color: #c00;
+}
+.slide pre {
+  font-family: monaco, consolas, monospace, sans-serif;
+}
+.slide pre.small {
+  font-size: 12px;
+}
+.slide pre.big {
+  font-size: 30px;
+  line-height: 1.8em;
+}
+#title-slide h1 {
+  position: relative;
+  margin-top: 15%;
+}
+#title-slide h2 {
+  text-align: center;
+  margin-bottom: 10%;
+  border: 0;
+}
+#title-slide h3 {
+  text-align: center;
+}
+
+#about-me img {
+  float: right;
+}
+
+#integer h2, #integer-times h2, #integer-times-cont h2, #integer-times-cont-2 h2 {
+  text-align: center;
+}
+
+#button_wrapper {
+  margin-top: 5%;
+}
+#quiz-q1 h2, #quiz-q2 h2 {
+  font-size: 300%;
+}
+#quiz-q1 h3, #quiz-q2 h3 {
+  font-size: 200%;
+}
+
+#thank-you h3 {
+  position: absolute;
+  bottom: 10%;
+  right: 0;
+}

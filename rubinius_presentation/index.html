@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+        <title>Rubinius - Use Ruby</title>
+
+        <meta name="description" content="Rubinius - Use Ruby">
+        <meta name="author" content="Karol Hosiawa">
+        <meta name="viewport" content="width=1024, user-scalable=no">
+
+        <!-- Core and extension CSS files -->
+        <link rel="stylesheet" href="deck.js/core/deck.core.css">
+        <link rel="stylesheet" href="deck.js/extensions/goto/deck.goto.css">
+        <link rel="stylesheet" href="deck.js/extensions/navigation/deck.navigation.css">
+        <link rel="stylesheet" href="deck.js/extensions/status/deck.status.css">
+        <link rel="stylesheet" href="deck.js/extensions/hash/deck.hash.css">
+
+        <!-- Theme CSS files (menu swaps these out) -->
+        <link rel="stylesheet" id="style-theme-link" href="deck.js/themes/style/swiss.css">
+        <link rel="stylesheet" id="transition-theme-link" href="deck.js/themes/transition/fade.css">
+
+        <!-- Custom CSS just for this page -->
+        <link rel="stylesheet" href="introduction.css">
+
+        <script src="deck.js/modernizr.custom.js"></script>
+</head>
+
+<body class="deck-container" onload="nursery(); youngGen();">
+
+
+  <section class="slide" id="title-slide">
+    <h1>Rubinius</h1>
+    <h2>Use Ruby</h2>
+    <h3>http://rubini.us</h3>
+  </section>
+
+  <section class="slide" id="about-me">
+    <h2>About me</h2>
+    <img src="images/hosiawak.gif" alt="Karol Hosiawa - hosiawak">
+    <ul>
+      <li>
+        <h3>Karol Hosiawa</h3>
+      </li>
+      <li>
+        <h3>Working with Ruby since 2005</h3>
+      </li>
+      <li>
+        <h3><a href="http://rubyonrails.pl">rubyonrails.pl</a> maintainer</h3>
+      </li>
+      <li>
+        <h3>Occasional Rubinius committer</h3>
+      </li>
+      <li>
+        <h3><a href="http://twitter.com/hosiawak">twitter.com/hosiawak</a></h3>
+      </li>
+      <li>
+        <h3><a href="http://github.com/hosiawak">github.com/hosiawak</a></h3>
+      </li>
+    </ul>
+  </section>
+
+  <section class="slide" id="agenda">
+    <h2>Agenda</h2>
+    <ul>
+      <li class="slide">
+        <h4>What is Rubinius ?</h4>
+      </li>
+      <li class="slide">
+        <h4>Compatibility</h4>
+      </li>
+      <li class="slide">
+        <h4>Comparison with MRI (Matz Ruby Interpreter)</h4>
+        <ul>
+          <li><h4>Code</h4></li>
+          <li><h4>Memory management</h4></li>
+          <li><h4>Interpreter / compiler</h4></li>
+        </ul>
+      </li>
+      <li class="slide">
+        <h4>Performance summary</h4>
+      </li>
+      <li class="slide">
+        <h4>Quiz (Rubinius T-shirts)</h4>
+      </li>
+      <li class="slide">
+        <h4>Questions</h4>
+      </li>
+    </ul>
+  </section>
+
+  <section class="slide" id="what-is-rubinius">
+    <h2>What is Rubinius ?</h2>
+    <ul>
+      <li><h4>An implementation of the Ruby programming language</h4></li>
+      <li><h4>Project started in 2006</h4></li>
+      <li><h4>Rubinius breaks through in 2011</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="compatibility">
+    <h2>Compatibility</h2>
+    <ul>
+      <li>
+        <h4>Rubinius aims to be fully compatible with:</h4>
+        <ul>
+          <li><h4>MRI 1.8 - done</h4></li>
+          <li><h4>MRI 1.9 and 2 - near future</h4></li>
+        </ul>
+      </li>
+      <li><h4>Uses RubySpec to assert compatibility</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="why-rubinius">
+    <h2>Why Rubinius ?</h2>
+    <ul>
+      <li><h4>MRI is good enough for me</h4></li>
+      <li><h4>I can work around some of its problems</h4></li>
+      <li class="slide">
+        <h4>You don't have to - we can have it better</h4>
+      </li>
+    </ul>
+  </section>
+
+  <section class="slide" id="why-rubinius-foundations">
+    <h2>Why Rubinius ?</h2>
+    <ul>
+      <li><h4>Rubinius is built from ground up on solid foundations</h4></li>
+      <li><h4>Optimized for running Ruby applications</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="what-are-the-foundations">
+    <h2>What are the foundations ?</h2>
+    <ul>
+      <li class="slide"><h4>Code</h4></li>
+      <li class="slide"><h4>Memory management</h4></li>
+      <li class="slide"><h4>Interpreter and compiler</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="code-rubinius-highlights">
+    <h2>Code - Rubinius - Highlights</h2>
+    <ul>
+      <li class="slide"><h4>Rubinius VM executes Ruby code</h4></li>
+      <li class="slide"><h4>The VM, GC and JIT compiler are written in C++</h4></li>
+      <li class="slide"><h4>Almost all other code is Ruby</h4></li>
+      <li class="slide"><h4>Ruby is a first class citizen in Rubinius</h4></li>
+      <li class="slide"><h4>The goal is to have as much of the system written in Ruby as possible</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="code-mri-highlights">
+    <h2>Code - MRI - Highlights</h2>
+    <ul>
+      <li class="slide"><h4>Except for some stdlib classes MRI is all C</h4></li>
+      <li class="slide">
+        <h4>Ruby is a second class citizen</h4>
+        <ul class="slide">
+          <li>it's just a thin layer on top of all that C code</li>
+        </ul>
+      </li>
+      <li class="slide"><h4>When you want to make your code run faster the general advice is to write it in C</h4></li>
+      <li class="slide"><h4>eg. a recent rewrite of Date and Pathname in C in MRI 1.9.3</h4></li>
+      <li class="slide"><h4>Ruby should be avoided if it causes problems</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="code-comparison">
+    <h2>Code - Comparison</h2>
+    <ul>
+      <li class="slide"><h4>Rubinius builds a consistent system</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="integer">
+    <h2>Integer</h2>
+    <ul class="slide left nobullet">
+      <li><h4><span class="orange">class</span> Fixnum &lt; Integer</h4></li>
+      <li><h4><span class="blue">10</span></h4></li>
+    </ul>
+    <ul class="slide right nobullet">
+      <li><h4><span class="orange">class</span> Bignum &lt; Integer</h4></li>
+      <li><h4><span class="blue">8743674365876</span></h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="integer-times">
+    <h2>Integer#times</h2>
+    <div class="slide left">
+      <h2>MRI</h2>
+<pre class="small">
+<span class="orange">static</span> VALUE
+int_dotimes(VALUE <span class="blue">num</span>)
+{
+    RETURN_ENUMERATOR(num, 0, 0);
+
+    <span class="orange">if</span> (FIXNUM_P(num)) {
+        long <span class="blue">i</span>, <span class="blue">end</span>;
+
+        end = FIX2LONG(num);
+        <span class="orange">for</span> (i=0; i&lt;end; i++) {
+            rb_yield(LONG2FIX(i));
+        }
+    }
+    <span class="orange">else</span> {
+        VALUE <span class="blue">i</span> = INT2FIX(0);
+
+        <span class="orange">for</span> (;;) {
+            <span class="orange">if</span> (!RTEST(rb_funcall(i, <span class="green">'&lt;'</span>, 1, num)))
+                <span class="orange">break</span>;
+            rb_yield(i);
+            i = rb_funcall(i, <span class="green">'+'</span>, 1, INT2FIX(1));
+        }
+    }
+    <span class="orange">return</span> num;
+}
+
+</pre>
+    </div>
+
+    <div class="slide right">
+      <h2>Rubinius</h2>
+<pre class="small">
+<span class="orange">def</span> times
+  <span class="orange">return</span> to_enum(<span class="blue">:times</span>) <span class="orange">unless</span> block_given?
+
+  i = 0
+  <span class="orange">while</span> i < <span class="blue">self</span>
+    <span class="orange">yield</span> i
+    i += 1
+  end
+  <span class="blue">self</span>
+end
+</pre>
+    </div>
+
+  </section>
+
+  <section class="slide" id="integer-times-cont">
+    <h2>Integer#times</h2>
+    <ul>
+      <li class="slide"><h4>OK, so that MRI code is not very object oriented and clean</h4></li>
+      <li class="slide"><h4>But surely it's FAST because it's C, right ?</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="integer-times-cont-2">
+    <h2>Integer#times</h2>
+    <ul>
+      <li class="slide"><h4>50_000_000.times {} is 2x faster on Rubinius than on MRI 1.9.3</h4></li>
+      <li class="slide"><h4>Just using C doesn't guarantee a performant dynamic language like Ruby</h4></li>
+      <li class="slide"><h4>Smarter approach is needed</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="code-rubinius-highlights">
+    <h2>Code - Rubinius</h2>
+    <ul>
+      <li class="slide"><h4>Almost all core and stdlib classes are written in Ruby</h4></li>
+      <li class="slide"><h4>Some low level operations are implemented as Primitives in C++</h4></li>
+      <li class="slide"><h4>This enables better runtime optimizations</h4></li>
+      <li class="slide"><h4>Simplifies debugging</h4></li>
+      <li class="slide"><h4>Ruby code can be reused by other implementations, eg. jRuby</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="mixology">
+    <h2>Mixology</h2>
+    <ul>
+      <li class="slide"><h4>A gem that allows objects to mixin and unmix modules</h4></li>
+      <li class="slide"><h4><a href="http://bit.ly/mixology-c">Mixology in MRI</a></h4></li>
+      <li class="slide"><h4><a href="http://bit.ly/mixology-java">Mixology in jRuby</a></h4></li>
+      <li class="slide"><h4><a href="http://bit.ly/mixology-rubinius">Mixology in Rubinius</a></h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="code-not-just-core">
+    <h2>Code - It's not just core/stdlib classes</h2>
+    <ul>
+      <li class="slide"><h4>AST generation (Melbourne::Processor) is written in Ruby</h4></li>
+      <li class="slide"><h4>Bytecode generator/compiler is in Ruby</h4></li>
+      <li class="slide"><h4>Various tools like the profiler and debugger are written mostly in Ruby</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="power-ast">
+    <h2>Rubinius - very powerful features</h2>
+    <ul>
+      <li class="slide">
+        <h4>AST transformation</h4>
+        <ul>
+          <li><h4>Syntax tree macros</h4></li>
+          <li><h4>Compiler transforms (eg. safe math transform)</h4></li>
+          <li><h4>Better/easier mutation testing (eg. Heckle)</h4></li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <section class="slide" id="power-bytecode">
+    <h2>Rubinius - very powerful features</h2>
+    <div class="slide left">
+      <h4>Custom bytecode generation, eg.</h4>
+<pre>
+<span class="orange">def</span> hello
+  Rubinius.asm <span class="orange">do</span>
+    push_literal <span class="green">"hello "</span>
+    push_literal <span class="green">"world"</span>
+    send :+, 1
+  <span class="orange">end</span>
+<span class="orange">end</span>
+</pre>
+    </div>
+
+    <div class="slide right">
+<pre>
+irb> hello
+=> <span class="green">"hello world"</span>
+</pre>
+    </div>
+  </section>
+
+  <section class="slide" id="code-rubinius-future">
+    <h2>Code in Rubinius</h2>
+    <ul>
+      <li>
+        <h4>Future possibilities</h4>
+        <ul>
+          <li><h4>Better tools built on top of all the Ruby system APIs Rubinius provides</h4></li>
+          <li><h4>Low level machine code generation in Ruby for special purposes (eg. custom float library)</h4></li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <section class="slide" id="what-are-the-foundations-memory">
+    <h2>What are the foundations ?</h2>
+    <ul>
+      <li><h4>Code</h4></li>
+      <li><h4 class="red">Memory management</h4></li>
+      <li><h4>Interpreter and compiler</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="ruby-memory">
+    <h2>Ruby</h2>
+    <ul>
+      <li><h4>Object oriented programming language</h4></li>
+      <li><h4>Ruby means objects (sometimes a lot of objects)</h4></li>
+      <li><h4>Garbage collector does automatic object allocation/collection</h4></li>
+      <li><h4>You don't have to worry about it</h4></li>
+      <li><h4>unless it becomes a problem</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="gc-mri-18">
+    <h2>Garbage Collector (GC) - MRI 1.8</h2>
+    <ul>
+      <li><h4>Conservative "stop the world" collector</h4></li>
+      <li><h4>Mark and sweep</h4></li>
+      <li><h4>Can't move objects so can't compact memory</h4></li>
+      <li><h4>Memory difficult (impossible) to reclaim</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="gc-mri-18-patches">
+    <h2>GC - MRI 1.8 - Patches</h2>
+    <ul>
+      <li><h4>MBARI patches</h4></li>
+      <li><h4>REE patches</h4></li>
+      <li><h4>Kiji patches (Twitter)</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="gc-mri-19">
+    <h2>GC - MRI 1.9</h2>
+    <ul>
+      <li><h4>Much better than 1.8</h4></li>
+      <li><h4>Recognizes normal objects and long lived objects</h4></li>
+      <li><h4>Collection is faster because it ignores long lived objects until full GC run</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="gc-mri-19-patches">
+    <h2>GC - MRI 1.9 - Patches</h2>
+    <ul>
+      <li><h4>Longlife patch</h4></li>
+      <li><h4>LazySweep patch (merged into 1.9.3)</h4></li>
+      <li><h4>ParallelMarking patch</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="gc-rubinius">
+    <h2>GC - Rubinius</h2>
+    <ul>
+      <li><h4>Generational:</h4></li>
+      <li class="slide"><h4>It splits objects into groups based on their age and size</h4></li>
+      <li class="slide"><h4>Nursery, Young generation, Mature, Large objects</h4></li>
+      <li class="slide"><h4>and treats each group in a different way</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="gc-rubinius-generational-explanation">
+    <h2>GC - Rubinius</h2>
+    <ul>
+      <li><h4>Freshly hatched objects are more likely to become garbage than older objects that have been around for a while</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="gc-rubinius-nursery">
+    <h2>Rubinius GC - Nursery</h2>
+    <canvas width="910" height="250" id="nursery_canvas"></canvas>
+    <div id="button_wrapper"><input type="button" value="Step" id="nursery_button"/></div>
+  </section>
+
+  <section class="slide" id="gc-rubinius-young-gen">
+    <h2>Rubinius GC - Young generation</h2>
+    <canvas width="910" height="250" id="young_gen_canvas"></canvas>
+    <div id="button_wrapper"><input type="button" value="Step" id="young_gen_button"/></div>
+  </section>
+
+  <section class="slide" id="gc-rubinius-mature-gen">
+    <h2>Rubinius GC - Mature generation</h2>
+    <ul>
+      <li><h4>Mature objects are objects that have been promoted from the Young generation after living past the promotion threshold 'X'</h4></li>
+      <li><h4>Autotune is the mechanism that is used to dynamically adjust the GC cycles before mature collection occurs</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="gc-rubinius-large-objects">
+    <h2>Rubinius GC - Large objects</h2>
+    <ul>
+      <li><h4>Large objects are born in a birthing tank rather than a nursery</h4></li>
+      <li><h4>Any object that exceeds the defined byte size for a large object upon allocation is allocated directly into the large objects space.</h4></li>
+      <li><h4>This is done to avoid copying since copying large objects is an expensive operation</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="gc-practice-mri-18">
+    <h2>What does it all mean in practice ? - MRI 1.8</h2>
+    <ul>
+      <li><h4>MRI 1.8 - likely to experience <strong>huge</strong> memory consumption when you create <strong>huge</strong> number of objects</h4></li>
+      <li><h4>eg. generating a financial report using millions of temporary objects</h4></li>
+      <li><h4>You can't get that memory back</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="gc-practice-mri-19">
+    <h2>What does it all mean in practice ? - MRI 1.9</h2>
+    <ul>
+      <li><h4>MRI 1.9 - better GC than 1.8 (less memory, better collection)</h4></li>
+      <li><h4>Still not generational, there are issues making it so (C extensions for example)</h4></li>
+      <li><h4>Still slow compared to Rubinius GC (putting a lot of pressure on your app)</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="gc-practice-mri-19">
+    <h2>What does it all mean in practice ? - Rubinius GC</h2>
+    <ul>
+      <li><h4>Rubinius GC - enables more optimizations than mark and sweep GC</h4></li>
+      <li><h4>GC can compact memory and release it to the OS</h4></li>
+      <li><h4>Very fast</h4></li>
+      <li><h4>All objects are extremely lightweight (packs ivars for example)</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="gc-why-is-it-important">
+    <h2>Why is it important ?</h2>
+    <ul>
+      <li><h4>As we are Ruby developers we should not be afraid to create many objects</h4></li>
+      <li><h4>MRI is limiting us (1.8 too much memory, 1.9 - slow)</h4></li>
+      <li><h4>Rubinius GOT IT ALL SORTED</h4></li>
+      <li><h4>jRuby is another good alternative not suffering from GC problems</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="gc-how-much-better">
+    <h2>How much better is Rubinius GC ?</h2>
+    <ul>
+      <li><h4>It all depends on your program BUT:</h4></li>
+      <li><h4>Run <a href="https://gist.github.com/1008305">gist.github.com/1008305</a></h4></li>
+      <li><h4>It creates 10,000,000 objects</h4></li>
+      <li><h4>For every 100 objects it saves 1 object</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="gc-benchmark">
+    <h2>GC bench - https://gist.github.com/1008305</h2>
+    <img src="images/gc-benchmark.png">
+  </section>
+
+  <section class="slide" id="what-are-the-foundations-interpreter">
+    <h2>What are the foundations ?</h2>
+    <ul>
+      <li><h4>Code</h4></li>
+      <li><h4>Memory management</h4></li>
+      <li><h4 class="red">Interpreter and compiler</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="interpreter-mri">
+    <h2>Interpreter - MRI</h2>
+    <ul>
+      <li><h4>MRI 1.8 - naive tree walker, walks the abstract syntax tree and executes code</h4></li>
+      <li><h4>MRI 1.9 - bytecode interpreter (YARV)</h4></li>
+      <li><h4>Both 1.8 and 1.9 have a Global Interpreter Lock</h4></li>
+      <li><h4>You can't use threads to effectively utilize modern mulit-core CPUs</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="interpreter-mri-cont">
+    <h2>Interpreter - MRI</h2>
+    <ul>
+      <li><h4>MRI 1.9.3 has made the global lock more granular - it helps</h4></li>
+      <li><h4>But it's still a locking VM</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="interpreter-rubinius">
+    <h2>Interpreter - Rubinius</h2>
+    <ul>
+      <li><h4>Bytecode interpreter</h4></li>
+      <li><h4>Just-In-Time compiler</h4></li>
+      <li><h4>Fully concurrent native threads</h4></li>
+      <li><h4>No GIL</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="interpreter-overview">
+    <h2>Rubinius - Interpreter/compiler overview</h2>
+    <ul>
+      <li><h4>Parses Ruby code</h4></li>
+      <li><h4>Generates AST</h4></li>
+      <li><h4>Generates bytecode for every tree node</h4></li>
+      <li><h4>Executes bytecode (interpreter)</h4></li>
+      <li><h4>Compile some bytecode and optimize (JIT compiler)</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="rubinius-compiler">
+    <h2>Rubinius - Compiler</h2>
+    <ul>
+      <li><h4>Generates AST nodes which are just Ruby objects in a tree structure</h4></li>
+    </ul>
+    <div class="slide left">
+      <h4>AST</h4>
+<pre class="small">
+<span class="green">"1 + 2"</span>.to_ast
+
+<span class="orange">SendWithArguments</span>
+  <span class="blue">@line</span>: 1
+  <span class="blue">@name</span>: :+
+  <span class="blue">@privately</span>: false
+  <span class="blue">@check_for_local</span>: false
+  <span class="blue">@vcall_style</span>: false
+  <span class="blue">@block</span>: nil
+  <span class="blue">@arguments</span>: \
+    <span class="orange">ActualArguments</span>
+      <span class="blue">@line</span>: 1
+      <span class="blue">@splat</span>: nil
+      <span class="blue">@array</span>: [
+        <span class="orange">FixnumLiteral</span> [0]
+          <span class="blue">line</span>: 1
+          <span class="blue">value</span>: 2
+      ]
+  <span class="blue">@receiver</span>: \
+    <span class="orange">FixnumLiteral</span>
+      <span class="blue">@line</span>: 1
+      <span class="blue">@value</span>: 1
+</pre>
+</div>
+
+<div class="slide right">
+  <h4>Bytecode</h4>
+<pre class="small">
+============= :__script__ ==============
+<span class="orange">Arguments</span>:   0 required, 0 post, 0 total
+<span class="orange">Arity</span>:       0
+<span class="orange">Locals</span>:      0
+<span class="orange">Stack size</span>:  2
+<span class="orange">Lines to IP</span>: 1: 0..6
+
+0000:  <span class="blue">meta_push_1</span>
+0001:  <span class="blue">meta_push_2</span>
+0002:  <span class="blue">meta_send_op_plus</span>          <span class="green">:+</span>
+0004:  <span class="blue">pop</span>
+0005:  <span class="blue">push_true</span>
+0006:  <span class="blue">ret</span>
+----------------------------------------
+</pre>
+    </div>
+  </section>
+
+  <section class="slide" id="compiler-compiled-methods">
+    <h2>Bytecode compiler</h2>
+    <ul>
+      <li><h4>All methods are compiled into CompiledMethods</h4></li>
+      <li><h4>They're just Ruby objects you can use, inspect and modify</h4></li>
+      <li><h4>They're stored in a CompiledMethods database</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="interpreter-compiler">
+    <h2>Interpreter</h2>
+    <ul>
+      <li><h4>The interpreter executes CompiledMethod's bytecode</h4></li>
+      <li><h4>Generates profile data and feeds it into the JIT compiler</h4></li>
+      <li><h4>JIT compiler optimizes runtime performance</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="jit-compiler-inlining">
+    <h2>JIT Compiler - Inlining</h2>
+    <div class="slide left">
+<pre>
+./bin/rbx -Xjit.show=true
+
+<span class="orange">def</span> simple
+  1
+<span class="orange">end</span>
+
+1_000_000.times { simple }
+</pre>
+<pre class="small">
+[[[ JIT finished background compiling  (block) ]]]
+[[[ JIT finished background compiling  (method) ]]]
+</pre>
+</div>
+    <div class="slide right">
+<h4>Inlining method 'simple':</h4>
+<pre>
+1_000_000.times { 1 }
+</pre>
+
+<h4>Inlining block into Integer#times:</h4>
+<pre>
+i = 0
+<span class="orange">while</span> i &lt; <span class="blue">self</span>
+  1 # THIS WAS yield i
+  i += 1
+end
+</pre>
+
+    </div>
+  </section>
+
+
+  <section class="slide" id="performance-approach-comparison">
+    <h2>Performance - Approach</h2>
+    <div class="slide left">
+      <ul>
+        <li><h4>MRI</h4></li>
+        <li><h4>Ruby - second class</h4></li>
+        <li><h4>C - first class</h4></li>
+        <li><h4>Ruby code slow ? Rewrite in C</h4></li>
+      </ul>
+    </div>
+    <div class="slide right">
+      <ul>
+        <li><h4>Rubinius</h4></li>
+        <li><h4>Ruby - first class</h4></li>
+        <li><h4>Create a better VM to make Ruby run fast</h4></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="slide" id="jvm">
+    <h2>JVM</h2>
+    <ul>
+      <li><h4>Do Java programmers rewrite performance ciritical parts in C ?</h4></li>
+      <li><h4>Probably not. They have to write in Java and the JVM makes the code run fast</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="rubinius-how-does-it-perform">
+    <h2>Rubinius - How does it perform ?</h2>
+    <ul>
+      <li><h4>It depends on the code being run</h4></li>
+      <li><h4>Microbenchmarks give better speeds than 1.8, some better than 1.9, some things are orders of magnitude faster than 1.9, other things are slower, some are much slower eg. Marshal</h4></li>
+      <li><h4>Constant imporvement</h4></li>
+    </ul>
+  </section>
+
+  <section class="slide" id="bench-array-map">
+    <h2>Array#map</h2>
+    <img src="images/bench-array-map.png">
+  </section>
+
+  <section class="slide" id="bench-string-split">
+    <h2>String#split</h2>
+    <img src="images/bench-string-split.png">
+  </section>
+
+  <section class="slide" id="bench-hash-merge">
+    <h2>Hash#merge</h2>
+    <img src="images/bench-hash-merge.png">
+  </section>
+
+  <section class="slide" id="bench-red-black-tree">
+    <h2>Real World - Red Black Tree</h2>
+    <img src="images/bench-red-black-tree.png">
+  </section>
+
+  <section class="slide" id="bench-avi-protobuf">
+    <h2>Real World - AVI Protobuf</h2>
+    <img src="images/bench-avi-protobuf.png">
+  </section>
+
+  <section class="slide" id="rubinius-performance-summary">
+    <h2>Rubinius - Performance summary</h2>
+    <ul>
+      <li><h4>Constant improvement</h4></li>
+      <li><h4>Performance measuring tools (benchmark/ips) and speed.pypy.org (help needed)</h4></li>
+      <li><h4>Profiler</h4></li>
+      <li><h4>Better interpreter/JIT (multi tiered, better type information, specialization, ASM code generation etc.)</h4></li>
+  </section>
+
+  <section class="slide" id="rubinius-contribute">
+    <h2>I want to contribute</h2>
+    <ul>
+      <li><h4>Join #rubinius on IRC</h4></li>
+      <li><h4>rvm install rbx && rvm use rbx</h4></li>
+      <li><h4>Run your app</h4></li>
+      <li><h4>Raise and fix issues</h4></li>
+  </section>
+
+  <section class="slide" id="rubinius-contribute-cont">
+    <h2>I want to contribute</h2>
+    <ul>
+      <li><h4>Read docs at http://rubini.us/doc/en</h4></li>
+      <li><h4>Write docs, help with translations</h4></li>
+      <li><h4>Write code, RubySpecs</h4></li>
+      <li><h4>Have fun!</h4></li>
+  </section>
+
+  <section class="slide" id="quiz-q1">
+    <h2>QUIZ - Question 1</h2>
+      <div class="slide">
+<pre class="big">
+<span class="blue">push_int</span> 3
+<span class="blue">push_int</span> 4
+<span class="blue">send</span>     :+, 1
+</pre>
+      <h3>What value is on the stack after executing the above bytecode ?</h3>
+      </div>
+  </section>
+
+  <section class="slide" id="quiz-q1">
+    <h2>QUIZ - Question 2</h2>
+    <h3>Should you be afraid of creating a large number of temporary objects in Rubinius ?</h3>
+      </div>
+  </section>
+
+  <section class="slide" id="thank-you">
+    <h1>Thank you!</h1>
+    <h3><a href="http://hosiawak.github.com/rubinius_presentation">http://hosiawak.github.com/rubinius_presentation</a></h3>
+  </section>
+
+  <section class="slide" id="questions">
+    <h1>Questions ?</h1>
+  </section>
+
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<p class="deck-status">
+        <span class="deck-status-current"></span>
+        /
+        <span class="deck-status-total"></span>
+</p>
+
+<form action="." method="get" class="goto-form">
+        <label for="goto-slide">Go to slide:</label>
+        <input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
+        <datalist id="goto-datalist"></datalist>
+        <input type="submit" value="Go">
+</form>
+
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+
+  <!-- Grab CDN jQuery, with a protocol relative URL; fall back to local if offline -->
+  <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="deck.js/jquery-1.7.min.js"><\/script>')</script>
+
+<!-- Deck Core and extensions -->
+<script src="deck.js/core/deck.core.js"></script>
+<script src="deck.js/extensions/hash/deck.hash.js"></script>
+<script src="deck.js/extensions/menu/deck.menu.js"></script>
+<script src="deck.js/extensions/goto/deck.goto.js"></script>
+<script src="deck.js/extensions/status/deck.status.js"></script>
+<script src="deck.js/extensions/navigation/deck.navigation.js"></script>
+<script src="function_ext.js"></script>
+<script src="array_ext.js"></script>
+<script src="v2.js"></script>
+<script src="nursery.js"></script>
+<script src="young_gen.js"></script>
+
+<!-- Specific to this page -->
+<script src="/introduction.js"></script>
+
+</body>
+</html>

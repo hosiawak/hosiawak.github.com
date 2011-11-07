@@ -68,7 +68,7 @@ window.youngGen = function() {
             switch(this.status) {
             case 'allocating':
             this.block.fill = this.new_fill;
-            var speed = 4;
+            var speed = 5;
             var move = this.position.sub(new V2(this.position.x+this.width/2, this.position.y+this.height/2)).normalize().mul(speed);
             this.block.position = this.block.position.add(move);
             this.block.width = this.block.width + Math.abs(move.x*2);
@@ -127,12 +127,11 @@ window.youngGen = function() {
             // if scanner is over a column mark some objects as 'live'
             var column = Math.ceil((this.position.x - this.segment.position.x) / this.segment.slots[0].width);
             if (this.last_column != column) {
-                for(var i = 0; i < this.segment.slots_length; i++) {
-                    var slot = this.segment.slots[i];
-                    if (slot.column == column && Math.random() < 0.1) {
-                        slot.status = 'live';
-                    }
-                }
+                this.segment.slots.each(function(slot) {
+                        if (slot.column == column && Math.random() < 0.1) {
+                            slot.status = 'live';
+                        }
+                    });
                 this.last_column = column;
             }
             ctx.fillStyle = this.fill;
@@ -152,7 +151,7 @@ window.youngGen = function() {
         this.height = height;
         this.columns = 8;
         this.rows = 8;
-        this.fill = "#eee";
+        this.fill = "#ddd";
         this.padding = 5;
         this.spacing = 5;
         this.createSlots();
@@ -169,66 +168,50 @@ window.youngGen = function() {
     };
 
     Segment.prototype.fillSlots = function() {
-        for(var i = 0; i < this.slots_length; i++) {
-            var slot = this.slots[i];
-            if (slot.isEmpty()) slot.fill();
-        }
+        this.slots.each(function(slot) {
+                if (slot.isEmpty()) slot.fill();
+            });
     };
 
     Segment.prototype.emptySlots = function() {
-        for(var i = 0; i < this.slots_length; i++) {
-            var slot = this.slots[i];
-            if (!slot.isEmpty()) slot.empty();
-        }
-    };
-
-    Segment.prototype.hasEmptySlots = function() {
-        var hasEmpty;
-        for(var i = 0; i < this.slots_length; i++) {
-            if (this.slots[i].isEmpty()) hasEmpty = true;
-            else hasEmpty = false;
-        }
-        return hasEmpty;
+        this.slots.each(function(slot) {
+                if (!slot.isEmpty()) slot.empty();
+            });
     };
 
     Segment.prototype.firstEmptySlot = function() {
-        for(var i = 0; i < this.slots_length; i++) {
-            var s = this.slots[i];
-            if (s.isEmpty())
-                return s;
-        }
+        return this.slots.detect(function(slot) {
+                if (slot.isEmpty()) return true;
+            });
     };
 
     Segment.prototype.allocateBlocks = function() {
-        for(var i = 0; i < this.slots_length; i++) {
-            var slot = this.slots[i];
-            if (slot.status == "idle") {
-                slot.allocate();
-                break;
-            }
+        var idle_slot = this.slots.detect(function(slot) {
+                if (slot.status == "idle") {
+                    return true;
+                }
+            });
+        if (idle_slot) {
+            idle_slot.allocate();
         }
     };
 
     Segment.prototype.scan = function() {
         // mark all non empty slots as allocated
-        for(var i = 0; i < this.slots_length; i++) {
-            var slot = this.slots[i];
-            if (!slot.isEmpty()) {
-                slot.status = 'allocated';
-            }
-        }
+        this.slots.each(function(slot) {
+                if (!slot.isEmpty()) {
+                    slot.status = 'allocated';
+                }
+            });
         this.scanner = new Scanner(this, 40);
     };
 
     Segment.prototype.moveLive = function() {
-        var dest = this.scene.findInactiveSegment().firstEmptySlot();
-        for (var i = 0; i < this.slots_length; i++) {
-            var slot = this.slots[i];
-            if (slot.status == "live") {
-                slot.moveLive(dest);
-                break;
-            }
-        }
+        var dest = this.scene.findInactiveSegment().firstEmptySlot(),
+        live_slot = this.slots.detect(function(slot) {
+                if (slot.status == "live") return true;
+            });
+        if (live_slot) live_slot.moveLive(dest);
     };
 
     Segment.prototype.movedLive = function(source, dest) {
@@ -251,10 +234,9 @@ window.youngGen = function() {
     };
 
     Segment.prototype.fadeGarbage = function() {
-        for(var i = 0; i < this.slots_length; i++) {
-            var slot = this.slots[i];
-            slot.empty();
-        }
+        this.slots.each(function(slot) {
+                slot.empty();
+            });
     };
 
     Segment.prototype.draw = function(ctx, canvas) {
@@ -267,28 +249,49 @@ window.youngGen = function() {
 
     Segment.prototype.drawSlots = function(ctx, canvas) {
         var liveSlots = [];
-        for(var i = 0; i < this.slots_length; i++) {
-            var slot = this.slots[i];
+        this.slots.each(function(slot) {
             if (slot.status == "moving_live")
                 liveSlots.push(slot);
             else
                 slot.draw(ctx, canvas);
-        }
+            });
         // live slots
-        for(var i = 0; i < liveSlots.length; i++) {
-            liveSlots[i].draw(ctx, canvas);
-        }
+        liveSlots.each(function(live_slot) {
+                live_slot.draw(ctx,canvas);
+            });
         if (this.scanner) this.scanner.draw(ctx, canvas);
     };
 
+
+    function Legend(position) {
+        this.position = position;
+        this.liveText = "NEW OBJECT";
+        this.survivingText = "SURVIVING OBJECT";
+        this.fontColor = '#333';
+        this.font = 'normal 20px sans-serif';
+        this.newFill = '#f5be10';
+        this.liveFill = '#8cb61d';
+    }
+
+    Legend.prototype.draw = function(ctx, canvas) {
+        ctx.fillStyle = this.newFill;
+        ctx.fillRect(this.position.x, this.position.y, 40, 30);
+        ctx.fillStyle = this.liveFill;
+        ctx.fillRect(this.position.x, this.position.y+40, 40, 30);
+        ctx.fillStyle = this.fontColor;
+        ctx.font = this.font;
+        ctx.fillText(this.liveText, this.position.x + 50, this.position.y+22);
+        ctx.fillText(this.survivingText, this.position.x + 50, this.position.y + 62);
+    };
+
     function Scene() {
-        this.canvas = document.getElementById("canvas");
+        this.canvas = document.getElementById("young_gen_canvas");
         this.ctx = this.canvas.getContext("2d");
         this.setup();
         this.activeSegment = null;
         this.currentStep = null;
         this.steps = ['allocate', 'scan', 'moveLive', 'fadeGarbage'];
-        this.button = document.getElementById("button");
+        this.button = document.getElementById("young_gen_button");
         this.button.onclick = this.nextStep.bind(this);
     }
 
@@ -298,24 +301,26 @@ window.youngGen = function() {
         segmentA.createSlots();
         segmentB = new Segment(this, 'B', new V2(320,0), 290, 250);
         segmentB.createSlots();
+        console.log(segmentB);
         this.segments = [segmentA, segmentB];
+        this.legend = new Legend(new V2(640,0));
     };
 
     Scene.prototype.findActiveSegment = function() {
+        var emptySegment;
         if (!this.activeSegment) {
             // finds the first empty segment
-            for(var i = 0; i < this.segments.length; i++) {
-                var s = this.segments[i];
-                if (s.hasEmptySlots()) {
-                    this.activeSegment = s;
-                    return this.activeSegment;
-                } else {
-                    alert("no empty segment found");
-                }
+            emptySegment = this.segments.detect(function(segment) {
+                    if (segment.firstEmptySlot()) {
+                        return true;
+                    }});
+            if (emptySegment) {
+                this.activeSegment = emptySegment;
+            } else {
+                alert("no empty segment found");
             }
-        } else {
-            return this.activeSegment;
         }
+        return this.activeSegment;
     };
 
     Scene.prototype.findInactiveSegment = function() {
@@ -376,7 +381,8 @@ window.youngGen = function() {
         for (var i = 0; i < this.segments.length; i++) {
             this.segments[i].drawSlots(this.ctx, this.canvas);
         }
-    };
+        this.legend.draw(this.ctx, this.canvas);
+  };
 
     var scene = new Scene();
     setInterval(function() { scene.draw()}, 25);
